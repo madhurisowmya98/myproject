@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ctel.dao.EmployeeMapper">
+
+	<resultMap type="employee" id="Employee">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="role" column="role" />
+		<result property="address" column="address" />
+		<result property="salary" column="salary" />
+		<result property="mobile" column="mobile" />
+		<result property="emailId" column="emailId" />
+		<result property="password" column="password" />
+		<result property="status" column="status" />
+		<result property="createdOn" column="createdOn" />
+		<result property="createdBy" column="createdBy" />
+		<result property="updatedOn" column="updatedOn" />
+		<result property="updatedBy" column="updatedBy" />
+	</resultMap>
+
+	<insert id="create" parameterType="employee" keyProperty="id"
+		useGeneratedKeys="true">
+		INSERT INTO employee1(id,name,role, address, salary, mobile,
+		emailId,password,
+		status, createdOn, createdBy,
+		updatedOn, updatedBy)
+		VALUES(#{id},
+		#{name},#{role}, #{address}, #{salary},
+		#{mobile},#{emailId},#{password},'New',
+		#{createdOn}, #{createdBy},
+		#{updatedOn},#{updatedBy})
+
+		<!-- <selectKey resultType="String" order="AFTER" keyProperty="returnedId"> 
+			SELECT LAST_INSERT_ID() as returnedId </selectKey> -->
+	</insert>
+
+
+	<insert id="batchcreate" parameterType="employee"
+		keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO
+		employee1(id,name,role,
+		address, salary, mobile, emailId,password,
+		status, createdBy)
+		VALUES(
+		#{id},#{name},#{role}, #{address}, #{salary},
+		#{mobile},#{emailId},#{password},'New',
+		'CTEL')
+	</insert>
+
+	<select id="fetchL" resultType="String">
+		select id from employee1 ORDER BY
+		id DESC LIMIT 1
+	</select>
+
+	<select id="login" resultType="Employee">
+		select * from employee1 where
+		(id=#{id} and mobile=#{mobile}) and status NOT LIKE 'd%'
+	</select>
+
+	<insert id="insertStatus"
+		parameterType="com.ctel.model.Employee">
+		Insert into LoginStatus(id,name) values(#{id},#{name});
+	</insert>
+
+	<!-- <insert id="insertBatchStatus" parameterType="com.ctel.model.Employee"> 
+		Insert into LoginStatus(name,id) values(#{name},id=#{id}); </insert> -->
+
+
+	<update id="delete" parameterType="com.ctel.model.Employee">
+		update employee1 set
+		status=#{status}, updatedOn=#{updatedOn}, updatedBy=#{updatedBy} where
+		id=#{id}
+	</update>
+
+	<select id="getEmployeeById" resultType="Employee">
+		select * from employee1
+		where id=#{id} and status NOT LIKE
+		'd%'
+	</select>
+
+
+	<!-- <select id="findByName" resultType="com.ctel.model.Employee"> select 
+		* from employee1 where name=#{name} and status NOT LIKE 'd%' </select> -->
+
+	<select id="getAll" resultType="Employee">
+		select * from employee1  <!-- e INNER JOIN LoginStatus l ON e.id=l.id -->
+		where
+		status NOT LIKE 'd%'
+		order by salary DESC
+	</select>
+
+	<update id="update" parameterType="com.ctel.model.Employee">
+		update employee1 set
+		name=#{name},role=#{role}, address=#{address}, salary=#{salary},
+		mobile=#{mobile},
+		emailId=#{emailId}, status=#{status},
+		updatedOn=#{updatedOn},
+		updatedBy=#{updatedBy} where employee1.id=#{id}
+
+	</update>
+
+
+</mapper>

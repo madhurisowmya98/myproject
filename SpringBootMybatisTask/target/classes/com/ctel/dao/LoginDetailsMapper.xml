@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ctel.dao.LoginDetailsMapper">
+
+	<resultMap type="logindetails" id=" LoginDetails">
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="date" column="date" />
+		<result property="logintime" column="logintime" />
+		<result property="logouttime" column="logouttime" />
+		<result property="totaltime" column="totaltime" />
+	</resultMap>
+
+	<insert id="saveLoginDetails"
+		parameterType="com.ctel.model.LoginDetails">
+		insert into loginDetails(id,name,date,logintime)
+		values(#{id},#{name},#{date},#{logintime})
+	</insert>
+	<update id="savelogouttimes"
+		parameterType="com.ctel.model.LoginDetails">
+		update loginDetails set logouttime= #{logouttime},totaltime=#{totaltime} where (id=#{id} and date=#{date}) ORDER BY logintime DESC LIMIT 1 
+	</update>
+
+
+	<select id="findlogintimebyId" resultType="LoginDetails">
+		select * from loginDetails where (id='CTIS1007' and date='2023-03-14') ORDER BY logintime DESC LIMIT 1 
+	</select>
+	
+	<select id="getDetails" resultType="LoginStatus">
+		select * from <!-- employee1 e INNER JOIN -->
+		LoginDetails
+	</select>
+
+
+</mapper>
